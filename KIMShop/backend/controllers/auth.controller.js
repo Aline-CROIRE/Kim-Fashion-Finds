@@ -157,5 +157,16 @@ export const refreshToken = async (req, res) => {
     }
 };
 
-//implement get profile later 
-// export const getprofile=async(req,res)=>{}
+
+export const getprofile=async(req,res)=>{
+ try {
+    res.json(req.user);
+  
+ } catch (error) {
+
+  res.status(500).json({message:"server error",error:error.message}); 
+
+  
+ }
+
+}
