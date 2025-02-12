@@ -9,11 +9,10 @@ router.post("/signup",signup);
 router.post("/login",login);
 router.get("/logout",logout);
 router.get("/refresh-token",refreshToken);
- router.get("/profile",getprofile);
+ router.get("/profile",protectRoute,getprofile);
 
 
 
 
 
 export default router;
-
