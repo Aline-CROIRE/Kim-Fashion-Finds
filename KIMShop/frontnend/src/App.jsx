@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar"
 import { Toaster } from "react-hot-toast"
 import { useUserStore } from "../stores/useUserStore"
 import { useEffect } from "react"
-import { CircleCheckIcon } from "lucide-react"
+
 import LoadingSpinner from "./components/LoadingSpinner"
 
 function App() {

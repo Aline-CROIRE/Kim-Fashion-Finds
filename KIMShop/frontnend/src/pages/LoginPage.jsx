@@ -1,21 +1,19 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { motion } from "framer-motion"
-import { LogIn,Mail,Lock,ArrowRight,Loader } from "lucide-react"
-import { useUserStore } from "../../stores/useUserStore"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { LogIn, Mail, Lock, ArrowRight, Loader } from "lucide-react";
+import { useUserStore } from "../../stores/useUserStore";
+
 const LoginPage = () => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 
-    const[email,setEmail]=useState('');
-    const[password,setPassword]=useState('');
+	const { login, loading } = useUserStore();
 
-
-	const { login,loading } = useUserStore();
-
-    const handleSubmit = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(email, password);
-		
-	login({email, password});
+		login(email, password);
 	};
 
 	return (
@@ -55,7 +53,7 @@ const LoginPage = () => {
 									rounded-md shadow-sm
 									 placeholder-gray-400 focus:outline-none focus:ring-emerald-500 
 									 focus:border-emerald-500 sm:text-sm'
-									placeholder='your-email@gmail.com'
+									placeholder='you@example.com'
 								/>
 							</div>
 						</div>
@@ -114,5 +112,4 @@ const LoginPage = () => {
 		</div>
 	);
 };
-
 export default LoginPage;
