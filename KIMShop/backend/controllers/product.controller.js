@@ -1,12 +1,11 @@
-
-import product from '../models/product.model.js';
+import Product from '../models/product.model.js'; // Corrected import
 import { redis } from '../lib/redis.js';
 import cloudinary from '../lib/cloudinary.js'
 
 
 export const getAllProducts=async(req,res)=>{
     try{
-        const products= await product.find({});
+        const products= await Product.find({}); // Corrected usage
         res.json({products});
     }catch(error){
         console.log("errror in getAllproducts controlller",error.message);
@@ -27,7 +26,7 @@ export const getFeaturedProducts = async(req,res)=>{
      // if not in redis ,fetch it from mongodb
      // .lean return a plain js object instead of mongodb document 
 
-     featuredProducts=await product.find({isFeatures:true}).lean();
+     featuredProducts=await Product.find({isFeatures:true}).lean();  // Corrected usage
    
      //for feture quick access store it in redis
 
@@ -45,37 +44,39 @@ export const getFeaturedProducts = async(req,res)=>{
 };
 
 
-export const createProduct= async(req,res)=>{
 
 
-    try{
-       const {name,description,price,image,category}=req.body;
-       let cloudinaryResponse=null
-       
-       if(image){
-        await cloudinary.uploader.upload(image,{folder:"products"})
-       }
 
-       const product= await product.create({
-        name,
-        description,
-        price,
-        image:cloudinaryResponse?.secure_url?cloudinaryResponse.secure_url:"",
-        category,
-       });
-       res.status(201).json(product);
-    }catch(error){
-
-        console.log("error in createProduct controller",error.message);
-        res.status(500).json({message:"Server error",error:error.message})
-
-    }
-}
-
-
+    export const createProduct = async (req, res) => {
+        try {
+            const { name, description, price, image, category } = req.body;
+            let cloudinaryResponse = null;
+    
+            if (image) {
+                try {
+                    cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+                } catch (cloudinaryError) {
+                    console.error("Cloudinary upload error:", cloudinaryError);
+                    return res.status(500).json({ message: "Cloudinary upload failed", error: cloudinaryError.message });
+                }
+            }
+    
+            const product = await Product.create({
+                name,
+                description,
+                price,
+                image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
+                category,
+            });
+            res.status(201).json(product);
+        } catch (error) {
+            console.log("error in createProduct controller", error.message);
+            res.status(500).json({ message: "Server error", error: error.message });
+        }
+    };
 export const deleteProduct =async(req,res)=>{
     try{
-        const product = await product.findByid(req.params.id);
+        const product = await Product.findById(req.params.id); // Corrected usage
 
         if(!product){
             return res.status(404).json({message:"product not found"});
@@ -91,7 +92,7 @@ export const deleteProduct =async(req,res)=>{
             }
         }
 
-          await product.findByidAndDelete(req.params.id)
+          await Product.findByIdAndDelete(req.params.id) // Corrected usage
           res.json({message:"Product deleted successfully"})
 
     }catch(error){
@@ -103,7 +104,7 @@ export const deleteProduct =async(req,res)=>{
 
 export const  getRecommendedProducts=async(req,res)=>{
     try {
-        const products = await product.aggregate([
+        const products = await Product.aggregate([ // Corrected usage
             {
             $sample:{size:4}
         },
@@ -127,10 +128,10 @@ res.json(products)
 }
 
 
-export const getProductsByCategory=async(res,req)=>{
-    const category= req.params;
+export const getProductsByCategory=async(req,res)=>{ // switched req and res
+    const {category}= req.params; // fixed category 
     try {
-       const product= await product.find({category});
+       const products= await Product.find({category}); //Corrected usage //fixed undefined products
        res.json(products)
 
     } catch (error) {
@@ -140,9 +141,9 @@ export const getProductsByCategory=async(res,req)=>{
     }
 }
 
-export const toggleFeaturedProducts=async(res,req)=>{
+export const toggleFeaturedProducts=async(req,res)=>{
     try {
-        const product= await product.findByid(req.params.id);
+        const product= await Product.findById(req.params.id); // Corrected usage
         if(product){
             product.isFeatures=!product.isFeatured;
 
@@ -166,11 +167,9 @@ export const toggleFeaturedProducts=async(res,req)=>{
 
 async function updateFeaturedProductsCache(){
     try {
-        const featuredProduct=await product.find({isFeatured:true}).lean();
+        const featuredProduct=await Product.find({isFeatured:true}).lean(); // Corrected usage
         await redis.set("featured_products",JSON.stringify(featuredProduct));
     } catch (error) {
         console.log("Error in upade featured product cache function");
     }
 }
-
-
