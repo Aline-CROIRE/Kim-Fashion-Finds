@@ -10,8 +10,9 @@ const productSchema=new mongoose.Schema({
         required: true
     },
 
+
     price:{
-        type:String,
+        type:Number,
         min:0,
         require:true
     },
@@ -20,8 +21,12 @@ const productSchema=new mongoose.Schema({
         required:[true, 'image is required']
 
     },
+    category:{
+        type:String,
+        required:[true, 'category is required']
+    },
 
-    isFeatures:{
+    isFeatured:{
         type:Boolean,
         default:false
     }

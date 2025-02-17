@@ -23,6 +23,15 @@ const res = await axios.post("/products/createProduct", productData); // Correct
 			set({ loading: false });
 		}
 	},
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * Fetches all products from the server.
+ * Sets loading state to true at the start and false upon completion.
+ * On success, updates the products state with the fetched data.
+ * On failure, sets an error message and displays a toast notification.
+ */
+
+/******  9f8b2020-baf7-421e-bdcd-e2ad2e5ee747  *******/
 	fetchAllProducts: async () => {
 		set({ loading: true });
 		try {
