@@ -55,7 +55,8 @@ export const useCartStore = create((set, get) => ({
 				const existingItem = prevState.cart.find((item) => item._id === product._id);
 				const newCart = existingItem
 					? prevState.cart.map((item) =>
-							item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+							item._id === product._id ? { ...item, quantity: item.quantity + 1,price:item.price } : item
+					
 					  )
 					: [...prevState.cart, { ...product, quantity: 1 }];
 				return { cart: newCart };
