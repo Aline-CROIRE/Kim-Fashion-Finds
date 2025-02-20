@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Trash, Star } from "lucide-react";
-import { use } from "react";
-import { useParams } from "react-router-dom";
+// import { use } from "react";
+// import { useParams } from "react-router-dom";
 import { useProductStore } from "../../stores/useProductStore";
 
 ;

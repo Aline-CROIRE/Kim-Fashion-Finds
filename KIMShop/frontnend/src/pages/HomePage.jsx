@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CategoryItem from '../components/CategoryItem';
 
 const categories = [
@@ -33,14 +33,13 @@ const HomePage = () => {
                 onMouseEnter={() => setIsHovered(true)} 
                 onMouseLeave={() => setIsHovered(false)}
             >
-                Discover the Essence of KIM Fashion Finds
+                Elevate Your Elegance with KIMÉLIA
             </h1>
-            <p  style={{ ...fadeInStyle, animationDelay: '0.2s' }} className='text-center text-xl font-semibold text-[#E0E0E0] mb-12'>
-                Step into a realm where style meets innovation, and each piece tells a story. 
-                At KIM Fashion Finds, we believe in the power of fashion to express who you are and inspire confidence.
+            <p style={{ ...fadeInStyle, animationDelay: '0.2s' }} className='text-center text-xl font-semibold text-[#E0E0E0] mb-12'>
+                Step into a world where fashion meets sophistication. At KIMÉLIA, every piece is designed to define your style and inspire confidence.
             </p>
-            <p  style={{ ...fadeInStyle, animationDelay: '0.2s' }} className='text-center text-xl font-semibold text-[#E0E0E0] mb-12'>
-                Immerse yourself in our thoughtfully curated categories. Each image invites you to explore a world of style and elegance.
+            <p style={{ ...fadeInStyle, animationDelay: '0.2s' }} className='text-center text-xl font-semibold text-[#E0E0E0] mb-12'>
+                Explore our curated collections and find your perfect match in elegance and style.
             </p>
 
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
