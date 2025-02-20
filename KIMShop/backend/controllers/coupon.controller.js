@@ -1,44 +1,45 @@
-import coupon from "../models/coupon.model.js";
+import Coupon from "../models/coupon.model.js";
 
-
+// Get active coupon for the user
 export const getCoupon = async (req, res) => {
-    try{
-        const coupon= await coupon.findOne({userId:req.user._id,isActive:true});
-        res.json(coupon||null);
-    }catch{
-        console.log("Error in getCoupon controller",error.message);
-        res.status(500).json({message:"Server Error",error:error.message}); 
-    }
-
-    };
-
-
-
-
-    export const validateCoupon = async (req, res) => {
-        try{
-            const {code}=req.body;
-            const coupon= await coupon.findOne({code:code,userId:req.user._id,isActive:true});
-            if(!coupon){
-                res.status(404).json({message:"Coupon not found"});
-            }
-            if(coupon.expirationDate< new date()){
-                coupon.isActive=false;
-                await coupon.save();
-                res.status(400).json({message:"Coupon expired"}); 
-            }   
-            
-            res.json({
-                message:"Coupon is valid",
-                code:coupon.code,
-                discountPercentage:coupon.discountPercentage } 
-            )
-            
-            
-        }catch(error){
-            console.log("Error in validateCoupon controller",error.message);
-          
+    try {
+        const foundCoupon = await Coupon.findOne({ userId: req.user._id, isActive: true });
+        if (!foundCoupon) {
+            return res.status(404).json({ message: "No active coupon found" });
         }
-    };
+        res.json(foundCoupon);
+    } catch (error) {
+        console.error("Error in getCoupon controller:", error.message);
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+};
 
-    export default {getCoupon,validateCoupon};
+// Validate a coupon
+export const validateCoupon = async (req, res) => {
+    try {
+        const { code } = req.body;
+        const foundCoupon = await Coupon.findOne({ code, userId: req.user._id, isActive: true });
+
+        if (!foundCoupon) {
+            return res.status(404).json({ message: "Coupon not found" });
+        }
+
+        if (foundCoupon.expirationDate < new Date()) {
+            foundCoupon.isActive = false;
+            await foundCoupon.save();
+            return res.status(400).json({ message: "Coupon expired" });
+        }
+
+        res.json({
+            message: "Coupon is valid",
+            code: foundCoupon.code,
+            discountPercentage: foundCoupon.discountPercentage,
+        });
+
+    } catch (error) {
+        console.error("Error in validateCoupon controller:", error.message);
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+};
+
+export default { getCoupon, validateCoupon };
