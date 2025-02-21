@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import PurchaseSuccessPage from "./pages/PurchaseSuccessPage"; 
 import PurchaseCancelPage from "./pages/paymentCancelPage";
-  import AnalyticsTab from "./components/AnalyticsTab";
+ 
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
