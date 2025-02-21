@@ -4,26 +4,32 @@ import { initiateMobileMoneyPayment, verifyMobileMoneyPayment } from "../lib/mob
 import Order from "../models/order.model.js";
 
 // Helper function to create a Stripe coupon
-const createStripeCoupon = async (discountPercentage) => {
-  const coupon = await stripe.coupons.create({
-    percent_off: discountPercentage,
-    duration: "once",
-  });
-  return coupon.id;
-};
+async function createStripeCoupon(discountPercentage) {
+	const coupon = await stripe.coupons.create({
+		percent_off: discountPercentage,
+		duration: "once",
+	});
+
+	return coupon.id;
+}
+
+async function createNewCoupon(userId) {
+	await Coupon.findOneAndDelete({ userId });
+
+	const newCoupon = new Coupon({
+		code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+		discountPercentage: 10,
+		expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+		userId: userId,
+	});
+
+	await newCoupon.save();
+
+	return newCoupon;
+}
 
 // Helper function to create a new coupon for the user
-const createNewCoupon = async (userId) => {
-  console.log(`Creating new coupon for user ${userId}`);
-  const newCoupon = new Coupon({
-    code: `WELCOME-${userId.toString().substring(0, 5)}`,
-    discountPercentage: 10,
-    userId: userId,
-    isActive: true,
-    expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Expiration date: 30 days
-  });
-  await newCoupon.save();
-};
+
 
 // Create a checkout session
 
