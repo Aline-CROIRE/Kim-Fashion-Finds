@@ -46,8 +46,8 @@ const PurchaseSuccessPage = () => {
 				height={window.innerHeight}
 				gravity={0.1}
 				style={{ zIndex: 99 }}
-				numberOfPieces={700}
-				recycle={false}
+				numberOfPieces={300}
+				recycle={true}
 			/>
 
 			<div className='max-w-md w-full bg-gray-800 rounded-lg shadow-xl overflow-hidden relative z-10'>
