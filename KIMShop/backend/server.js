@@ -1,3 +1,11 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Resolve __dirname in ES module environments
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
@@ -18,6 +26,7 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
+
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -35,6 +44,13 @@ app.use("/api/coupons", couponRoutes)
 app.use("/api/payments", paymentRoutes)
 app.use("/api/analytics", analyticsRoutes)
 app.use("/webhook", webhookRoutes)
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log("Server is running on http://localhost:" + PORT)
