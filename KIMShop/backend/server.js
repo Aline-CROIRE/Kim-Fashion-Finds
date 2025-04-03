@@ -25,7 +25,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ✅ Allow frontend origin dynamically from environment variable
-const allowedOrigins = [process.env.FRONTEND_URL || "http://localhost:5173"];
+const allowedOrigins = [process.env.NODE_ENV === "production" ? "https://kim-fashion-finds-1.onrender.com/" : "http://localhost:5173"];
+
 
 app.use(
   cors({
