@@ -25,8 +25,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ✅ Allow frontend origin dynamically from environment variable
-const allowedOrigins = [process.env.NODE_ENV === "production" ? "https://kim-fashion-finds-1.onrender.com/" : "http://localhost:5173"];
-
+const allowedOrigins = [process.env.NODE_ENV === "production" ? "https://kim-fashion-finds-1.onrender.com" : "http://localhost:5173"];
 
 app.use(
   cors({
@@ -49,7 +48,7 @@ app.use("/webhook", webhookRoutes);
 
 // ✅ Serve frontend in production
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../frontend/dist"); // ✅ Corrected Path
+  const frontendPath = path.join(__dirname, "frontnend", "build"); // Reference the correct folder name (frontnend)
   app.use(express.static(frontendPath));
 
   app.get("*", (req, res) => {
